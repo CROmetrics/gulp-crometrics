@@ -8,7 +8,7 @@ import optimizelify from './optimizelify';
 import commentRegex from 'comment-regex';
 
 const babelOptions = {
-  jsxPragma: 'jsxr',
+  
 };
 
 function bundlify() {
@@ -22,10 +22,11 @@ function bundlify() {
       .transform(sassify, { sourceMap: false })
       .bundle((err, buf) => {
         if (err) console.error(err);
-
-        const result = buf.toString();
-        const transformed = optimizelify(result);
-        file.contents = new Buffer(transformed);
+        else {
+          const result = buf.toString();
+          const transformed = optimizelify(result);
+          file.contents = new Buffer(transformed);
+        }
         next(null, file);
       });
   });

@@ -12,17 +12,17 @@ import finder from 'process-finder';
 
 const paths = {
   src: {
-    html: './src/**/*.html',
-    scripts: './src/**/*.js',
-    stylesheets: ['./src/**/*.css', './src/**/*.scss', './src/**/*.sass'],
+    html: '/src/**/*.html',
+    scripts: '/src/**/*.js',
+    stylesheets: ['/src/**/*.css', '/src/**/*.scss', '/src/**/*.sass'],
   },
-  html: './src/*.html',
-  scripts: './src/*.js',
-  stylesheets: ['./src/*.css', './src/*.scss', './src/*.sass'],
-  dest: './build/',
+  html: '/src/*.html',
+  scripts: '/src/*.js',
+  stylesheets: ['/src/*.css', '/src/*.scss', '/src/*.sass'],
+  dest: '',
 };
 
-export default function clearbuild(_gulp, { lintCss = false } = {}) {
+export default function clearbuild(_gulp, basePath, { lintCss = false } = {}) {
   const gulp = gulpHelp(_gulp);
   const sequence = gulpSeq.use(gulp);
 
@@ -53,9 +53,9 @@ export default function clearbuild(_gulp, { lintCss = false } = {}) {
   });
 
   gulp.task('watch', 'Rebuild when experiment files change.', () => {
-    gulp.watch(paths.src.html, ['build']);
-    gulp.watch(paths.src.scripts, ['build']);
-    gulp.watch(paths.src.stylesheets, ['build']);
+    gulp.watch(basePath + paths.src.html, ['build']);
+    gulp.watch(basePath + paths.src.scripts, ['build']);
+    gulp.watch(basePath + paths.src.stylesheets, ['build']);
   });
 
   // -- Build Experiment ----------
@@ -64,19 +64,19 @@ export default function clearbuild(_gulp, { lintCss = false } = {}) {
   });
 
   gulp.task('build:clean', 'Clean build.', (cb) => {
-    return del(paths.dest, cb);
+    return del([basePath + paths.dest + '/*.js', basePath + paths.dest + '/*.css'], cb);
   });
 
   gulp.task('build:scripts', 'Transpile and browserify scripts.', () => {
-    return gulp.src(paths.scripts)
+    return gulp.src(basePath + paths.scripts)
       .pipe(bundlify())
-      .pipe(gulp.dest(paths.dest));
+      .pipe(gulp.dest(basePath + paths.dest));
   });
 
   gulp.task('build:stylesheets', 'Compile stylesheets.', () => {
-    return gulp.src(paths.stylesheets)
+    return gulp.src(basePath + paths.stylesheets)
       .pipe(gulpSass().on('error', gulpSass.logError))
-      .pipe(gulp.dest(paths.dest));
+      .pipe(gulp.dest(basePath + paths.dest));
   });
 
   // -- Lint Experiment ----------
@@ -86,13 +86,13 @@ export default function clearbuild(_gulp, { lintCss = false } = {}) {
   );
 
   gulp.task('lint:scripts', 'Lint scripts.', () => {
-    return gulp.src(paths.scripts)
+    return gulp.src(basePath + paths.scripts)
       .pipe(eslint(eslintConfig))
       .pipe(eslint.format());
   });
 
   gulp.task('lint:stylesheets', 'Compile and lint stylesheets.', () => {
-    const task = gulp.src(paths.stylesheets)
+    const task = gulp.src(basePath + paths.stylesheets)
       .pipe(gulpSass().on('error', gulpSass.logError))
       .pipe(csslint(csslintConfig));
     if (lintCss) {
