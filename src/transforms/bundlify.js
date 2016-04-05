@@ -6,18 +6,22 @@ import stringify from 'stringify';
 import through2 from 'through2';
 import optimizelify from './optimizelify';
 import commentRegex from 'comment-regex';
+import path from 'path';
 
-const babelOptions = {
-  
-};
+const browserifyConfig = {
+  paths: [
+    path.resolve(__dirname,'../../node_modules'),
+    path.resolve(__dirname,'../../../../node_modules')
+  ]
+}
 
 function bundlify() {
   return through2.obj((file, enc, next) => {
     // get string of buffer contents
     const contents = file.contents.toString();
 
-    browserify(file.path)
-      .transform(babelify.configure(babelOptions))
+    browserify(file.path, browserifyConfig)
+      .transform(babelify)
       .transform(stringify(['.html']))
       .transform(sassify, { sourceMap: false })
       .bundle((err, buf) => {
