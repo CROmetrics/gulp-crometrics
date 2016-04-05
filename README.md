@@ -1,6 +1,6 @@
-# gulp-clearbuild
+# gulp-crometrics
 
-Clearhead Gulp Extension
+CROmetrics Gulp Extension (forked from gulp-clearbuild)
 
 ## Features
 
@@ -54,5 +54,9 @@ $('body').append(expX.html);
 
 ```js
 /*jshint unused:false*/
-var gulp = require('gulp-clearbuild')(require('gulp'));
+var gulp = require('gulp');
+var gulpCrometrics = require('gulp-crometrics').default; // or import gulpCrometrics from 'gulp-crometrics';
+var basePath = 'path/to/my/variation';
+
+gulpCrometrics(gulp, basePath)
 ```
