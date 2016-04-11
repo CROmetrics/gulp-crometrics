@@ -15,13 +15,17 @@ const browserifyConfig = {
   ]
 }
 
+const babelifyConfig = {
+  presets: [require('babel-preset-es2015')]
+}
+
 function bundlify() {
   return through2.obj((file, enc, next) => {
     // get string of buffer contents
     const contents = file.contents.toString();
 
     browserify(file.path, browserifyConfig)
-      .transform(babelify)
+      .transform(babelify.configure(babelifyConfig))
       .transform(stringify(['.html']))
       .transform(sassify, { sourceMap: false })
       .bundle((err, buf) => {

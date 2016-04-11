@@ -52,12 +52,6 @@ export default function clearbuild(_gulp, basePath, { lintCss = false } = {}) {
     });
   });
 
-  gulp.task('watch', 'Rebuild when experiment files change.', () => {
-    gulp.watch(basePath + paths.src.html, ['build']);
-    gulp.watch(basePath + paths.src.scripts, ['build']);
-    gulp.watch(basePath + paths.src.stylesheets, ['build']);
-  });
-
   // -- Build Experiment ----------
   gulp.task('build', 'Build experiment scripts and stylesheets.', () => {
     return sequence('lint', 'build:clean', ['build:scripts', 'build:stylesheets'])();
@@ -99,4 +93,9 @@ export default function clearbuild(_gulp, basePath, { lintCss = false } = {}) {
       task.pipe(csslint.reporter());
     }
   });
+  
+  // Watch experiment files
+  gulp.watch(basePath + paths.src.html, ['build']);
+  gulp.watch(basePath + paths.src.scripts, ['build']);
+  gulp.watch(basePath + paths.src.stylesheets, ['build']);
 }
