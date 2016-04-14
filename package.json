@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "node bin/compile.js && node node_modules/babel-cli/bin/babel.js --plugins transform-object-assign src/ -d ./lib/",
     "prepublish": "npm run compile",
-    "bump": "npm version patch -m 'bump to v%s' && npm publish && git push --follow-tags"
+    "bump": "npm version patch -m \"bump to v%s\" && npm publish && git push --follow-tags"
   },
   "repository": {
     "type": "git",
