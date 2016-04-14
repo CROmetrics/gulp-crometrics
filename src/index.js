@@ -25,31 +25,33 @@ const paths = {
 export default function clearbuild(_gulp, basePath, { lintCss = false } = {}) {
   const gulp = gulpHelp(_gulp);
   const sequence = gulpSeq.use(gulp);
+  
+  // Executable Dev function to compile and watch for further file changes
+  this.dev = () => {
+    return sequence(
+      ['lint:scripts', 'lint:stylesheets'],
+      ['build:scripts', 'build:stylesheets'],
+      'watch'
+    )();
+  };
+  
+  // Compile all relevant files but don't watch for further changes.
+  this.compile = () => {
+    return sequence(
+      ['lint:scripts', 'lint:stylesheets'],
+      ['build:scripts', 'build:stylesheets']
+    )();
+  };
 
   gulp.task('default', 'Run the dev task.', ['dev']);
 
   // -- Live Development ----------
-  gulp.task('dev', 'Build and preview your experiment.', () => {
-    return sequence(
-      ['lint:scripts', 'lint:stylesheets'],
-      ['build:scripts', 'build:stylesheets'],
-      'npi',
-      'watch'
-    )();
-  });
+  gulp.task('dev', 'Build and preview your experiment.', this.dev);
 
-  gulp.task('npi', 'Start new NPI process.', () => {
-    return sequence('npi:kill', 'npi:start')();
-  });
-
-  gulp.task('npi:start', 'Start NPI process.', shell.task('npi'));
-
-  gulp.task('npi:kill', 'Kill NPI process.', () => {
-    return finder.find(8000, function(err, pids) {
-      pids.forEach((pid) => {
-        shell.task(`kill -9 ${ pid }`)();
-      });
-    });
+  gulp.task('watch', 'Rebuild when experiment files change.', () => {
+    gulp.watch(basePath + paths.src.html, ['build']);
+    gulp.watch(basePath + paths.src.scripts, ['build']);
+    gulp.watch(basePath + paths.src.stylesheets, ['build']);
   });
 
   // -- Build Experiment ----------
@@ -93,9 +95,4 @@ export default function clearbuild(_gulp, basePath, { lintCss = false } = {}) {
       task.pipe(csslint.reporter());
     }
   });
-  
-  // Watch experiment files
-  gulp.watch(basePath + paths.src.html, ['build']);
-  gulp.watch(basePath + paths.src.scripts, ['build']);
-  gulp.watch(basePath + paths.src.stylesheets, ['build']);
 }
