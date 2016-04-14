@@ -5,8 +5,8 @@ const concat = String.prototype.concat.bind('');
 function optimizelify(code) {
   const forceDirective = '/* _optimizely_evaluate=force */';
   const jshint = {
-    start: '\n\/*jshint ignore:start*\/ ',
-    end: ' \/*jshint ignore:end*\/',
+    start: '\n\/*jshint ignore:start*\/\n',
+    end: '\n\/*jshint ignore:end*\/',
   };
 
   const safeLoop = parseSafeLoop(code);
