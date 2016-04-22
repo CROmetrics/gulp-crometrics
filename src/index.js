@@ -71,7 +71,7 @@ export default function clearbuild(_gulp, basePath, { lintCss = false } = {}) {
 
   gulp.task('build:stylesheets', 'Compile stylesheets.', () => {
     return gulp.src(basePath + paths.stylesheets)
-      .pipe(gulpSass().on('error', gulpSass.logError))
+      .pipe(gulpSass({ sourceMapEmbed: false }).on('error', gulpSass.logError))
       .pipe(gulp.dest(basePath + paths.dest));
   });
 
@@ -89,7 +89,7 @@ export default function clearbuild(_gulp, basePath, { lintCss = false } = {}) {
 
   gulp.task('lint:stylesheets', 'Compile and lint stylesheets.', () => {
     const task = gulp.src(basePath + paths.stylesheets)
-      .pipe(gulpSass().on('error', gulpSass.logError))
+      .pipe(gulpSass({ sourceMapEmbed: false }).on('error', gulpSass.logError))
       .pipe(csslint(csslintConfig));
     if (lintCss) {
       task.pipe(csslint.reporter());

@@ -12,7 +12,7 @@
     "$": false
   },
   "rules": {
-    "comma-dangle": [2, "always-multiline"],
+    "comma-dangle": [2, "only-multiline"],
     "consistent-return": 0,
     "curly": 0,
     "new-cap": 0,
