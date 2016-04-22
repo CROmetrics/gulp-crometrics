@@ -16,8 +16,7 @@ const browserifyConfig = {
 }
 
 const babelifyConfig = {
-  presets: [require('babel-preset-es2015')],
-  plugins: [require('babel-rewire-plugin')]
+  presets: [require('babel-preset-es2015')]
 }
 
 function bundlify() {
