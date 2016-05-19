@@ -29,7 +29,7 @@ function bundlify() {
       .transform(stringify(['.html']))
       .transform(sassify, { sourceMap: false })
       .bundle((err, buf) => {
-        if (err) console.error(err);
+        if (err) console.error(err.toString());
         else {
           const result = buf.toString();
           const transformed = optimizelify(result);
