@@ -27,7 +27,7 @@ function bundlify() {
     browserify(file.path, browserifyConfig)
       .transform(babelify.configure(babelifyConfig))
       .transform(stringify(['.html']))
-      .transform(sassify, { sourceMap: false })
+      .transform(sassify, { sourceMapEmbed: false })
       .bundle((err, buf) => {
         if (err) console.error(err.toString());
         else {

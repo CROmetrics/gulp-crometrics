@@ -30,7 +30,7 @@ export default function clearbuild(_gulp, basePath, { lintCss = false } = {}) {
   this.dev = () => {
     return sequence(
       ['lint:scripts', 'lint:stylesheets'],
-      ['build:scripts', 'build:stylesheets'],
+      'build:stylesheets', 'build:scripts'
       'watch'
     )();
   };
@@ -39,7 +39,7 @@ export default function clearbuild(_gulp, basePath, { lintCss = false } = {}) {
   this.compile = () => {
     return sequence(
       ['lint:scripts', 'lint:stylesheets'],
-      ['build:scripts', 'build:stylesheets']
+      'build:stylesheets', 'build:scripts'
     )();
   };
 
@@ -52,24 +52,45 @@ export default function clearbuild(_gulp, basePath, { lintCss = false } = {}) {
     gulp.watch(basePath + paths.src.html, ['build']);
     gulp.watch(basePath + paths.src.scripts, ['build']);
     gulp.watch(basePath + paths.src.stylesheets, ['build']);
+    
+    // Watch global
+    gulp.watch(paths.src.html, ['build']);
+    gulp.watch(paths.src.scripts, ['build']);
+    gulp.watch(paths.src.stylesheets, ['build']);
   });
 
   // -- Build Experiment ----------
   gulp.task('build', 'Build experiment scripts and stylesheets.', () => {
-    return sequence('lint', 'build:clean', ['build:scripts', 'build:stylesheets'])();
+    return sequence('lint', 'build:clean', 'build:stylesheets', 'build:scripts')();
   });
 
   gulp.task('build:clean', 'Clean build.', (cb) => {
     return del([basePath + paths.dest + '/*.js', basePath + paths.dest + '/*.css'], cb);
   });
 
-  gulp.task('build:scripts', 'Transpile and browserify scripts.', () => {
+  gulp.task('build:scripts', 'Transpile and browserify scripts.', ['build:scripts:global','build:scripts:variation']);
+  
+  gulp.task('build:scripts:global', () => {
+    return gulp.src(paths.scripts)
+      .pipe(bundlify())
+      .pipe(gulp.dest(paths.dest));
+  });
+  
+  gulp.task('build:scripts:variation', () => {
     return gulp.src(basePath + paths.scripts)
       .pipe(bundlify())
       .pipe(gulp.dest(basePath + paths.dest));
   });
+  
+  gulp.task('build:stylesheets', 'Compile stylesheets.', ['build:stylesheets:global','build:stylesheets:variation']);
 
-  gulp.task('build:stylesheets', 'Compile stylesheets.', () => {
+  gulp.task('build:stylesheets:global', 'Compile stylesheets.', () => {
+    return gulp.src(paths.stylesheets)
+      .pipe(gulpSass({ sourceMapEmbed: false }).on('error', gulpSass.logError))
+      .pipe(gulp.dest(paths.dest));
+  });
+
+  gulp.task('build:stylesheets:variation', 'Compile stylesheets.', () => {
     return gulp.src(basePath + paths.stylesheets)
       .pipe(gulpSass({ sourceMapEmbed: false }).on('error', gulpSass.logError))
       .pipe(gulp.dest(basePath + paths.dest));
