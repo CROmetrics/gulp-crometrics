@@ -1,3 +1,4 @@
+/*jshint esversion:6*/
 import babel from 'babel-core';
 import babelify from 'babelify';
 import browserify from 'browserify';
@@ -13,11 +14,11 @@ const browserifyConfig = {
     path.resolve(__dirname,'../../node_modules'),
     path.resolve(__dirname,'../../../../node_modules')
   ]
-}
+};
 
 const babelifyConfig = {
   presets: [require('babel-preset-es2015')]
-}
+};
 
 function bundlify() {
   return through2.obj((file, enc, next) => {
@@ -32,7 +33,8 @@ function bundlify() {
         if (err) console.error(err.toString());
         else {
           const result = buf.toString();
-          const transformed = optimizelify(result);
+          let transformed = optimizelify(result);
+          transformed = transformed.replace(/^["']use strict["'];/igm, '');
           file.contents = new Buffer(transformed);
         }
         next(null, file);
