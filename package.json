@@ -10,11 +10,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/clearhead/gulp-clearbuild.git"
+    "url": "git+https://github.com/crometrics/gulp-crometrics.git"
   },
   "keywords": [
     "Gulp",
-    "Clearhead",
+    "crometrics",
     "Optimizely",
     "Browserify",
     "ES6",
@@ -23,9 +23,9 @@
   "author": "eclecto <eric@crometrics.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/clearhead/gulp-crometrics/issues"
+    "url": "https://github.com/crometrics/gulp-crometrics/issues"
   },
-  "homepage": "https://github.com/clearhead/gulp-crometrics#readme",
+  "homepage": "https://github.com/crometrics/gulp-crometrics#readme",
   "dependencies": {
     "babel-cli": "^6.6.4",
     "babel-core": "^6.7.0",

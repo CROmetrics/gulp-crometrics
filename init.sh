@@ -28,10 +28,10 @@ SUCCESS!!! Now run
 
 to see if you have any outdated required packages in:
  - gulp-clearbuild
- - clearhead
+ - crometrics
  - jsxr
 
-If any of the above are outdated, cd into clearhead-experiments
+If any of the above are outdated, cd into crometrics-experiments
   and then run npm install
 
 "
