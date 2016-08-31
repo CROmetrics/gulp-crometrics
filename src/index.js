@@ -9,6 +9,7 @@ import eslintConfig from './config/eslintconfig';
 import csslint from 'gulp-csslint';
 import csslintConfig from './config/csslintconfig';
 import finder from 'process-finder';
+import path from 'path';
 
 const paths = {
   src: {
@@ -32,7 +33,7 @@ export default function clearbuild(_gulp, basePath, { lintCss = false } = {}) {
   const gulp = gulpHelp(_gulp);
   const sequence = gulpSeq.use(gulp);
   
-  var globalPath = basePath.split('/')[0];
+  var globalPath = path.join(basePath,'..');
   
   // Executable Dev function to compile and watch for further file changes
   this.dev = () => {
@@ -76,7 +77,7 @@ export default function clearbuild(_gulp, basePath, { lintCss = false } = {}) {
   gulp.task('build:scripts', 'Transpile and browserify scripts.', ['build:scripts:global','build:scripts:variation']);
   
   gulp.task('build:scripts:global', () => {
-    return gulp.src(globalPath + '/' + paths.scripts)
+    return gulp.src(paths.scripts)
       .pipe(bundlify())
       .pipe(gulp.dest(globalPath));
   });
