@@ -1,6 +1,6 @@
 {
   "name": "gulp-crometrics",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "description": "Predefined Gulp Tasks for CROmetrics (fork of gulp-clearhead)",
   "main": "lib/index.js",
   "scripts": {
