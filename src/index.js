@@ -77,7 +77,7 @@ export default function clearbuild(_gulp, basePath, { lintCss = false } = {}) {
   gulp.task('build:scripts', 'Transpile and browserify scripts.', ['build:scripts:global','build:scripts:variation']);
   
   gulp.task('build:scripts:global', () => {
-    return gulp.src(paths.scripts)
+    return gulp.src(globalPath + '/' + paths.scripts)
       .pipe(bundlify())
       .pipe(gulp.dest(globalPath));
   });
